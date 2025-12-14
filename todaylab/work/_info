@@ -1,0 +1,82 @@
+m255
+K4
+z2
+Z0 !s99 nomlopt
+R0
+R0
+R0
+!s11f vlog 2021.1 2021.01, Jan 19 2021
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z1 dG:/COURSE_MATERIALS/SCRIPTING_BTECH/lab/ex-5/todaylab
+T_opt
+!s110 1738560673
+VYoKT>6mM0^I`C4Z^mPJ@B3
+Z2 04 8 4 work Adder_tb fast 0
+=1-900f0c47b101-67a054a0-8d-500c
+Z3 !s124 OEM100
+Z4 o-quiet -auto_acc_if_foreign -work work +acc
+Z5 tCvgOpt 0
+n@_opt
+Z6 OL;O;2021.1;73
+R1
+T_opt1
+!s110 1765649004
+VKoEB2OTO<V81V7lZPHEEC0
+R2
+=1-900f0c47b101-693daa6c-1ee-3020
+R3
+R4
+R5
+n@_opt1
+R6
+vAdder
+Z7 !s110 1765649000
+!i10b 1
+!s100 H:l7S=ZgD[PaSZ5:1hV<o1
+In]k<BL@W9I>O7_:QCKDcm2
+Z8 dD:/VIT_VAP_SCRIPTING_SMS/TCL_PERL_GUI/todaylab
+w1738560618
+8Adder.v
+FAdder.v
+!i122 6
+L0 13 14
+Z9 VDg1SIo80bB@j0V0VzS_@n1
+Z10 OL;L;2021.1;73
+r1
+!s85 0
+31
+Z11 !s108 1765648999.000000
+!s107 Adder.v|
+!s90 -reportprogress|300|Adder.v|
+!i113 0
+Z12 o-L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+R5
+n@adder
+vAdder_tb
+R7
+!i10b 1
+!s100 >i8ZHQzWF79_JSD3miY`32
+I0[?LmOOg6YGzKE?f;SQFU2
+R8
+w1738560568
+8Adder_tb.v
+FAdder_tb.v
+!i122 7
+L0 13 29
+R9
+R10
+r1
+!s85 0
+31
+R11
+!s107 Adder_tb.v|
+!s90 -reportprogress|300|Adder_tb.v|
+!i113 0
+R12
+R5
+n@adder_tb
