@@ -1,0 +1,71 @@
+DATAPATH SYNTHESIS — DETAILED VERIFICATION
+FAIL         Base generic netlist missing: /mnt/data/Smart_Sensor_Processor_WITH_Detailed_Verification/03_datapath_synthesis/outputs/base/smart_sensor_base_generic.v
+FAIL         Optimized generic netlist missing: /mnt/data/Smart_Sensor_Processor_WITH_Detailed_Verification/03_datapath_synthesis/outputs/optimized/smart_sensor_datapath_opt_generic.v
+
+======================================================================
+6.1  Operator Inference
+======================================================================
+INFO         Optimized generic multiply-like evidence=0, add-like evidence=0
+INFO         Operators may have been lowered/renamed; inspect generic gate report.
+EXPECTED      Behavioral '*' and '+' become multiplier/adder generic structures before cell mapping.
+JUSTIFICATION Operator inference lets synthesis construct arithmetic hardware from RTL expressions.
+
+======================================================================
+6.2  Bit-Width Optimization
+======================================================================
+EVIDENCE      Optimized RTL declares pair01[8:0], sensor_sum[9:0], product_sum[16:0].
+INFO         Genus rewrote widths/names; inspect RTL plus area report.
+INFO         Base area: report missing (/mnt/data/Smart_Sensor_Processor_WITH_Detailed_Verification/03_datapath_synthesis/reports/base/report_area.rpt)
+INFO         Optimized area: report missing (/mnt/data/Smart_Sensor_Processor_WITH_Detailed_Verification/03_datapath_synthesis/reports/optimized/report_area.rpt)
+EXPECTED      Signals use only the bits required by arithmetic range.
+JUSTIFICATION Unneeded width increases adder/register/routing capacitance and therefore area and dynamic power.
+
+======================================================================
+6.3  Resource Sharing
+======================================================================
+INFO         Multiply-like generic evidence: base=0 optimized=0
+NOT PROVEN   This datapath-optimized variant keeps parallel multipliers; explicit resource sharing is demonstrated more strongly in the TI optimized variant.
+EXPECTED      When sharing is applied, arithmetic-unit count decreases while MUX/control/latency may increase.
+JUSTIFICATION Resource sharing time-multiplexes an expensive operator across mutually exclusive operations.
+
+======================================================================
+6.4  Adder-Tree Balancing
+======================================================================
+EVIDENCE      Baseline RTL uses a serial sum chain; optimized RTL forms product_sum and sensor_sum in parallel before final addition.
+INFO         Base timing path: report missing (/mnt/data/Smart_Sensor_Processor_WITH_Detailed_Verification/03_datapath_synthesis/reports/base/report_timing.rpt)
+INFO         Optimized timing path: report missing (/mnt/data/Smart_Sensor_Processor_WITH_Detailed_Verification/03_datapath_synthesis/reports/optimized/report_timing.rpt)
+INFO         Inspect full timing paths to count serial adder levels; netlist naming is tool-dependent.
+EXPECTED      Fewer serial addition levels per stage in the optimized architecture.
+JUSTIFICATION Balancing associative additions reduces combinational logic depth and can shorten the critical path.
+
+======================================================================
+6.5  Pipelining
+======================================================================
+INFO         Mapped async-reset DFF count: base=0 optimized=0
+INFO         DFF count did not increase; inspect mapped register structure.
+INFO         Base timing: report missing (/mnt/data/Smart_Sensor_Processor_WITH_Detailed_Verification/03_datapath_synthesis/reports/base/report_timing.rpt)
+INFO         Optimized timing: report missing (/mnt/data/Smart_Sensor_Processor_WITH_Detailed_Verification/03_datapath_synthesis/reports/optimized/report_timing.rpt)
+EXPECTED      Shorter combinational path per cycle, improved slack/Fmax, but more registers and latency.
+JUSTIFICATION Pipeline registers partition a long arithmetic path into shorter clock-to-clock stages.
+
+======================================================================
+6.6  Retiming
+======================================================================
+NOT PROVEN   No retiming_status.txt recorded. Structural/timing comparison is still available.
+EXPECTED      Automatic retiming, if supported and beneficial, moves register boundaries without changing cycle-level functionality.
+JUSTIFICATION Retiming balances combinational delay between registers; it must be proven by register movement/timing improvement, not only by command acceptance.
+
+======================================================================
+6.7  Constant Multiplication
+======================================================================
+PASS         Shift-add form for multiply-by-5 is present in RTL/generic representation.
+EXPECTED      5*x is implemented as (x<<2)+x, avoiding a separate general variable multiplier.
+JUSTIFICATION Constant multiplication can often be decomposed into shifts and adds with lower hardware cost.
+
+======================================================================
+6.8  Register and Multiplexer Optimization
+======================================================================
+INFO         MUX/select-like evidence in optimized generic netlist=0
+PASS         Optimized RTL uses explicit register-enable style if(start).
+EXPECTED      Enable/select logic may be absorbed or restructured around register inputs (or become a clock-gating candidate in LP flow).
+JUSTIFICATION Synthesis can optimize MUX/enable placement for timing, area, and power while preserving register behavior.

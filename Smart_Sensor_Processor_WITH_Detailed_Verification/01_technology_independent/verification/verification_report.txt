@@ -1,0 +1,78 @@
+TECHNOLOGY-INDEPENDENT SYNTHESIS — DETAILED VERIFICATION
+FAIL         Base generic netlist missing: /mnt/data/Smart_Sensor_Processor_WITH_Detailed_Verification/01_technology_independent/outputs/base/smart_sensor_base_generic.v
+FAIL         Optimized generic netlist missing: /mnt/data/Smart_Sensor_Processor_WITH_Detailed_Verification/01_technology_independent/outputs/optimized/smart_sensor_ti_opt_generic.v
+
+======================================================================
+4.1  Constant Propagation
+======================================================================
+EVIDENCE      Baseline RTL contains fixed_mode = 1'b1. Check whether syn_generic removes that constant signal/logic from the BASE generic netlist.
+PASS         fixed_mode exists in RTL but is absent after syn_generic: direct constant-propagation evidence.
+EXPECTED      Constant-controlled gate/MUX disappears or simplifies to the surviving branch.
+JUSTIFICATION A permanently known logic value can be evaluated during generic synthesis; gates whose result becomes redundant are removed.
+
+======================================================================
+4.2  Dead-Code Removal
+======================================================================
+EVIDENCE      Baseline RTL declares unused_debug_product = s2 * s3 and it has no observable fanout.
+PASS         unused_debug_product is absent after syn_generic.
+INFO         Base generic area: report missing (/mnt/data/Smart_Sensor_Processor_WITH_Detailed_Verification/01_technology_independent/reports/base/report_area_generic.rpt)
+INFO         Optimized generic area: report missing (/mnt/data/Smart_Sensor_Processor_WITH_Detailed_Verification/01_technology_independent/reports/optimized/report_area_generic.rpt)
+EXPECTED      Unused multiplier cone disappears; combinational area/power should not include it.
+JUSTIFICATION Logic that cannot affect an output or retained state has no functional purpose and is eliminated.
+
+======================================================================
+4.3  Boolean Simplification
+======================================================================
+EVIDENCE      Baseline RTL contains (enable & start) | (enable & ~start), algebraically equal to enable.
+PASS         redundant_enable is absent from base generic netlist.
+EXPECTED      2 AND + inverter + OR structure collapses to the equivalent enable function.
+JUSTIFICATION E*S + E*~S = E*(S+~S) = E. Generic Boolean optimization reduces logic depth and gate count.
+
+======================================================================
+4.4  Common-Subexpression Elimination
+======================================================================
+EVIDENCE      The optimized RTL explicitly computes common_pair = s0+s1 once and reuses it for path_a/path_b.
+INFO         '+' operator text count in generic netlists: base=0 optimized=0 (only a hint; Genus may rewrite operators).
+INFO         common_pair name was optimized/renamed; use gate/area comparison instead.
+INFO         Base generic gate report: report missing (/mnt/data/Smart_Sensor_Processor_WITH_Detailed_Verification/01_technology_independent/reports/base/report_gates_generic.rpt)
+INFO         Optimized generic gate report: report missing (/mnt/data/Smart_Sensor_Processor_WITH_Detailed_Verification/01_technology_independent/reports/optimized/report_gates_generic.rpt)
+EXPECTED      One s0+s1 result is shared by two consumers rather than recomputed twice.
+JUSTIFICATION Sharing a common arithmetic subexpression reduces duplicated hardware, with possible fanout/timing trade-off.
+
+======================================================================
+4.5  Arithmetic Simplification
+======================================================================
+EVIDENCE      Baseline contains full_sum + 0; optimized RTL uses multiply-by-5 as (x<<2)+x.
+PASS         Redundant +0 structure/name is absent or absorbed after generic synthesis.
+INFO         Genus may have rewritten shift wiring; inspect generic netlist around weighted path.
+EXPECTED      x+0 disappears; constant multiply uses shift/wiring plus addition rather than a general variable multiplier.
+JUSTIFICATION Arithmetic identities and powers-of-two shifts reduce generic arithmetic cost.
+
+======================================================================
+4.6  FSM Optimization
+======================================================================
+EVIDENCE      Baseline RTL contains DEBUG state; smart_sensor_ti_opt removes DEBUG from the optimized RTL.
+PASS         DEBUG state name is absent in optimized generic netlist.
+INFO         Base gate report: report missing (/mnt/data/Smart_Sensor_Processor_WITH_Detailed_Verification/01_technology_independent/reports/base/report_gates.rpt)
+INFO         Optimized gate report: report missing (/mnt/data/Smart_Sensor_Processor_WITH_Detailed_Verification/01_technology_independent/reports/optimized/report_gates.rpt)
+EXPECTED      Less state/decode/MUX logic in the optimized version.
+JUSTIFICATION Unnecessary states and their transitions/output decodes consume state/control logic without useful behavior.
+
+======================================================================
+4.7  Resource Sharing
+======================================================================
+EVIDENCE      Baseline has two products; TI optimized architecture contains one shared_product selected over multiple cycles.
+INFO         Multiply-like textual evidence: base=0 optimized=0.
+INFO         Name optimized away; inspect multiplier count/generic area.
+INFO         Base final area: report missing (/mnt/data/Smart_Sensor_Processor_WITH_Detailed_Verification/01_technology_independent/reports/base/report_area.rpt)
+INFO         Optimized final area: report missing (/mnt/data/Smart_Sensor_Processor_WITH_Detailed_Verification/01_technology_independent/reports/optimized/report_area.rpt)
+EXPECTED      Fewer multiplier resources, but additional MUX/control and increased latency.
+JUSTIFICATION Expensive arithmetic hardware can be time-multiplexed when operations need not occur simultaneously.
+
+======================================================================
+4.8  Hierarchy Optimization
+======================================================================
+EVIDENCE      Optimized Tcl applies ungroup -all -flatten.
+PASS         Leaf hierarchy names are absent from optimized generic netlist.
+EXPECTED      Leaf boundary disappears, allowing cross-boundary optimization.
+JUSTIFICATION Flattening expands the optimization scope, potentially improving area/timing at the cost of hierarchy readability.

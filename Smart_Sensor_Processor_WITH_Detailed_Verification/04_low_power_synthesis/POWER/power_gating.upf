@@ -1,0 +1,4 @@
+# Educational IEEE 1801 template; requires real power-switch/isolation/retention cells.
+create_power_domain PD_SENSOR -elements {smart_sensor_low_power}
+# Complete with create_supply_port/net, create_power_switch, set_isolation,
+# set_retention, and power-state definitions for your technology.

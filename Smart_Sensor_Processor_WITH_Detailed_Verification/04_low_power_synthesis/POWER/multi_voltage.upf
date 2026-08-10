@@ -1,0 +1,5 @@
+# Educational IEEE 1801 template; not automatically applied by this demo flow.
+create_power_domain PD_SENSOR -elements {smart_sensor_low_power}
+create_power_domain PD_AON -elements {}
+# Add supply ports/nets and level-shifter strategy using your real technology.
+# set_level_shifter LS_SENSOR_TO_AON -domain PD_SENSOR -applies_to outputs

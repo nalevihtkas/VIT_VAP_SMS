@@ -1,0 +1,85 @@
+LOW-POWER SYNTHESIS — DETAILED VERIFICATION
+
+======================================================================
+7.1  Clock Gating
+======================================================================
+EVIDENCE      Low-power RTL updates major register banks only under if(active); run.tcl attempts lp_insert_clock_gating.
+NOT PROVEN   No ICG/clock-gate cell found. With the demo library this is expected unless a real ICG cell is supplied.
+EXPECTED      A real ICG cell drives grouped register clocks when enable is inactive.
+JUSTIFICATION Clock gating lowers clock activity alpha and therefore dynamic clock/register power; RTL enable alone is only a candidate, not proof of ICG insertion.
+
+======================================================================
+7.2  Operand Isolation
+======================================================================
+PASS         RTL contains operand isolation clamps iso_s0..iso_s3.
+INFO         Isolation/select-like generic-netlist evidence=0
+EXPECTED      When active=0, multiplier inputs are clamped to zero so internal multiplier toggling is suppressed.
+JUSTIFICATION Stopping irrelevant operand transitions reduces internal switching activity and dynamic power.
+
+======================================================================
+7.3  Data Gating
+======================================================================
+PASS         RTL contains if(active) updates for datapath registers.
+INFO         Base power: report missing (/mnt/data/Smart_Sensor_Processor_WITH_Detailed_Verification/04_low_power_synthesis/reports/base/report_power.rpt)
+INFO         Low-power power: report missing (/mnt/data/Smart_Sensor_Processor_WITH_Detailed_Verification/04_low_power_synthesis/reports/low_power/report_power.rpt)
+EXPECTED      Inactive data does not propagate into storage/datapath updates; switching power should reduce under representative activity.
+JUSTIFICATION Data gating suppresses unnecessary data activity, but a fair power comparison requires comparable activity annotation.
+
+======================================================================
+7.4  Multi-Bit Flip-Flop Candidate
+======================================================================
+NOT PROVEN   No MBFF cell found. Demo libraries do not provide real multi-bit flop cells.
+PASS         Grouped vector registers exist as MBFF candidates.
+EXPECTED      With an MBFF-capable library, several bit flops can map to a shared-clock multi-bit cell.
+JUSTIFICATION MBFFs reduce duplicated clock-buffering/internal clock capacitance; declaring a vector alone does not prove physical MBFF mapping.
+
+======================================================================
+7.5  Multi-Vt Mapping
+======================================================================
+INFO         vt_timing counts: LVT=0 RVT=0 HVT=0
+INFO         vt_leakage counts: LVT=0 RVT=0 HVT=0
+PASS         Timing policy shows no HVT occurrence (HVT discouraged).
+PASS         Leakage policy shows no LVT occurrence (LVT discouraged).
+INFO         VT timing timing report: report missing (/mnt/data/Smart_Sensor_Processor_WITH_Detailed_Verification/04_low_power_synthesis/reports/vt_timing/report_timing.rpt)
+INFO         VT leakage power report: report missing (/mnt/data/Smart_Sensor_Processor_WITH_Detailed_Verification/04_low_power_synthesis/reports/vt_leakage/report_power.rpt)
+EXPECTED      Timing policy favors LVT/RVT; leakage policy favors RVT/HVT.
+JUSTIFICATION Lower-Vt cells are typically faster but leakier; higher-Vt cells trade speed for lower leakage.
+
+======================================================================
+7.6  Multi-Voltage Operation
+======================================================================
+PASS         Multi-voltage UPF template is present.
+NOT PROVEN   No physical level-shifter cell found in mapped netlist.
+EXPECTED      A real multi-voltage implementation contains domains/supplies and level shifters on required crossings.
+JUSTIFICATION Behavioral connectivity or an UPF template alone is not proof; physical proof requires actual level-shifter cells and power-aware libraries.
+
+======================================================================
+7.7  Power Gating
+======================================================================
+PASS         Power-gating UPF template is present.
+NOT PROVEN   No physical power-switch cell found.
+EXPECTED      A real switchable domain has power-switch cells and a virtual supply net.
+JUSTIFICATION RTL power_on is behavioral control, not a physical supply switch; physical proof requires special cells and UPF implementation.
+
+======================================================================
+7.8  Isolation
+======================================================================
+PASS         Behavioral isolation clamp is present in RTL.
+NOT PROVEN   Behavioral clamp exists, but no physical isolation cell is mapped.
+EXPECTED      Outputs are clamped to a safe value when the switchable domain is off.
+JUSTIFICATION Functional clamp logic proves behavior; a true isolation implementation requires a characterized isolation cell and power intent.
+
+======================================================================
+7.9  Retention
+======================================================================
+PASS         Behavioral retained_result storage is present in RTL.
+NOT PROVEN   No physical retention flop is mapped; use simulation for behavioral preservation.
+EXPECTED      During simulated power-off/isolation, output is clamped; after restore the retained state can reappear.
+JUSTIFICATION A normal DFF/behavioral register is not a retention cell; physical retention needs special cells, retention supply, and UPF mapping.
+
+======================================================================
+7.10  Activity-Driven Power Optimization
+======================================================================
+FAIL         activity_status.txt missing.
+EXPECTED      Power report uses simulation-derived switching activity when VCD annotation succeeds.
+JUSTIFICATION Dynamic power depends on switching activity alpha; VCD-derived activity is more workload-representative than vectorless assumptions.

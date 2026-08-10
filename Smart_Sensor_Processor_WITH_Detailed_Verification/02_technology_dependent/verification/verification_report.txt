@@ -1,0 +1,70 @@
+TECHNOLOGY-DEPENDENT SYNTHESIS — DETAILED VERIFICATION
+FAIL         Relaxed mapped netlist missing: /mnt/data/Smart_Sensor_Processor_WITH_Detailed_Verification/02_technology_dependent/outputs/relaxed/smart_sensor_datapath_opt_netlist.v
+FAIL         Constrained mapped netlist missing: /mnt/data/Smart_Sensor_Processor_WITH_Detailed_Verification/02_technology_dependent/outputs/constrained/smart_sensor_datapath_opt_netlist.v
+
+======================================================================
+5.1  Technology Mapping
+======================================================================
+FAIL         No recognizable demo-library cell names found.
+EXPECTED      Generic operators are represented by cells from demo_cmos.lib.
+JUSTIFICATION syn_map converts technology-independent logic into target-library implementations.
+
+======================================================================
+5.2  AOI/OAI Mapping
+======================================================================
+INFO         Constrained mapped counts: AOI=0 OAI=0
+NOT PROVEN   No AOI/OAI cell selected; equivalent simple-cell mapping may still be legal.
+EXPECTED      Functions such as ~((A&B)|(C&D)) can map to AOI22; OAI form can map to OAI22.
+JUSTIFICATION A complex gate can replace several simple gates, reducing cell count/interconnect and often logic depth.
+
+======================================================================
+5.3  NAND/NOR Mapping
+======================================================================
+INFO         Constrained mapped counts: NAND=0 NOR=0
+NOT PROVEN   No NAND/NOR names selected; inspect equivalent mapped logic.
+EXPECTED      Library-specific NAND/NOR cells may replace equivalent Boolean networks.
+JUSTIFICATION Mapping is cost-driven; exact RTL gate spelling need not be preserved.
+
+======================================================================
+5.4  Cell Sizing
+======================================================================
+INFO         Drive suffix counts: relaxed X1=0 X4=0 ; constrained X1=0 X4=0
+INFO         No increase in X4 count; constraints may be met without additional upsizing.
+PASS         Optimized SDC contains the intended heavy-load/tight-transition constraints.
+EXPECTED      Heavier load/tighter slew encourages stronger cells.
+JUSTIFICATION Stronger cells lower effective output resistance and improve loaded delay/slew, usually with area/power cost.
+
+======================================================================
+5.5  Buffer Insertion
+======================================================================
+INFO         BUF count: relaxed=0 constrained=0
+INFO         No buffer-count increase; tool may use resizing or replication instead.
+EXPECTED      High-load/high-fanout nets may be split by buffer stages.
+JUSTIFICATION Buffers partition capacitive/fanout load so no single driver must directly drive every sink.
+
+======================================================================
+5.6  Fanout Repair
+======================================================================
+PASS         Constrained SDC requests max_fanout 4.
+INFO         No obvious structural delta; inspect QoR/constraint violations.
+INFO         Constrained QoR fanout lines: report missing (/mnt/data/Smart_Sensor_Processor_WITH_Detailed_Verification/02_technology_dependent/reports/constrained/report_qor.rpt)
+EXPECTED      Fanout violations are repaired by buffering, replication, resizing, or a combination.
+JUSTIFICATION Fanout repair is the objective; buffer insertion is only one possible repair mechanism.
+
+======================================================================
+5.7  Transition Repair
+======================================================================
+PASS         Constrained SDC requests max_transition 0.12.
+INFO         Constrained timing transition/slew lines: report missing (/mnt/data/Smart_Sensor_Processor_WITH_Detailed_Verification/02_technology_dependent/reports/constrained/report_timing.rpt)
+INFO         Constrained QoR transition/slew lines: report missing (/mnt/data/Smart_Sensor_Processor_WITH_Detailed_Verification/02_technology_dependent/reports/constrained/report_qor.rpt)
+INFO         No obvious cell-change evidence; report may show constraints were already satisfied.
+EXPECTED      Slow edges are repaired by stronger drivers and/or inserted buffers.
+JUSTIFICATION Output transition depends on driver strength and capacitive load; repair improves electrical slew quality.
+
+======================================================================
+5.8  Drive-Strength Optimization
+======================================================================
+INFO         Relaxed X1=0 X4=0 ; constrained X1=0 X4=0
+INFO         No X4 increase; inspect exact cell replacements in diff.
+EXPECTED      Selected X1 cells may be replaced with X4 equivalents on critical/heavily loaded paths.
+JUSTIFICATION Drive-strength optimization trades area/input capacitance/power for better loaded timing and transition.
