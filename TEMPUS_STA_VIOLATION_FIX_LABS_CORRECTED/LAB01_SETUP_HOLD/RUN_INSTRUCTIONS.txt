@@ -1,0 +1,28 @@
+LAB01_SETUP_HOLD - CORRECTED RUN INSTRUCTIONS
+=============================================
+
+The error in the screenshot is a FILE-NAME mismatch:
+  requested: 01_normal_setup_fail.tcl
+  original LAB01 file: 01_setup_fail.tcl
+
+Recommended command sequence:
+
+  cd TEMPUS_STA_VIOLATION_FIX_LABS_CORRECTED/LAB01_SETUP_HOLD
+  tempus -files 01_setup_fail.tcl
+  tempus -files 02_setup_fixed.tcl
+  tempus -files 03_hold_fail.tcl
+  tempus -files 04_hold_fixed.tcl
+
+Interactive alternative:
+
+  tempus
+  source 01_setup_fail.tcl
+
+Compatibility:
+A wrapper named 01_normal_setup_fail.tcl has also been added, so an old command
+that refers to that name will no longer fail because of a missing file.
+
+IMPORTANT:
+Prefer "tempus -files <script>.tcl" for these batch labs.  The scripts now find
+common/, netlist/, and lib/ from their own locations and therefore do not depend
+on the shell's current working directory.
