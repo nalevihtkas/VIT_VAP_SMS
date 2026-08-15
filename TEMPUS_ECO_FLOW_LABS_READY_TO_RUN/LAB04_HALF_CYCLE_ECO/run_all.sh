@@ -1,7 +1,0 @@
-#!/bin/bash
-set -e
-cd "$(dirname "$0")"
-echo "===== 01_pre_eco_half_fail.tcl ====="
-tempus -files "01_pre_eco_half_fail.tcl"
-echo "===== 02_run_half_cycle_setup_eco.tcl ====="
-tempus -files "02_run_half_cycle_setup_eco.tcl"

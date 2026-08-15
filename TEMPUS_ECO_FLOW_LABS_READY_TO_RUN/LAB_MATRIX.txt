@@ -1,9 +1,0 @@
-LAB                         TEMPUS ECO ACTION       SAME TIMING REQUIREMENT?
---------------------------------------------------------------------------------
-LAB01_SETUP_ECO             opt_signoff -setup     YES
-LAB01_HOLD_ECO              opt_signoff -hold      YES
-LAB02_CLOCK_MARGIN_ECO      opt_signoff -setup     YES; uncertainty retained
-LAB03_MULTICYCLE_EXCEPTION  no physical ECO        architectural MCP exception
-LAB04_HALF_CYCLE_ECO        opt_signoff -setup     YES
-LAB05_FALSE_PATH_EXCEPTION  no physical ECO        architectural false-path exception
-LAB06_CLOCK_GATING_ECO      opt_signoff -setup     YES
