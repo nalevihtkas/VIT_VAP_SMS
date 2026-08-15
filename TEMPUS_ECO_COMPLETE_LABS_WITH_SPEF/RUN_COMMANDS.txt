@@ -1,0 +1,40 @@
+RUN COMMANDS
+============
+
+Environment check:
+  tempus -files 00_CHECK_ENVIRONMENT.tcl
+
+LAB01 Setup:
+  cd LAB01_SETUP_ECO
+  tempus -files 01_pre_eco_setup_fail.tcl
+  tempus -eco -files 02_run_setup_eco.tcl
+
+LAB01 Hold:
+  cd ../LAB01_HOLD_ECO
+  tempus -files 01_pre_eco_hold_fail.tcl
+  tempus -eco -files 02_run_hold_eco.tcl
+
+LAB02 Clock Margin:
+  cd ../LAB02_CLOCK_MARGIN_ECO
+  tempus -files 01_pre_eco_fail.tcl
+  tempus -eco -files 02_run_eco_keep_uncertainty.tcl
+
+LAB03 MCP:
+  cd ../LAB03_MULTICYCLE_EXCEPTION
+  tempus -files 01_before_mcp.tcl
+  tempus -files 02_apply_valid_mcp.tcl
+
+LAB04 Half Cycle:
+  cd ../LAB04_HALF_CYCLE_ECO
+  tempus -files 01_pre_eco_half_fail.tcl
+  tempus -eco -files 02_run_half_cycle_eco.tcl
+
+LAB05 False Path:
+  cd ../LAB05_FALSE_PATH_EXCEPTION
+  tempus -files 01_before_false_path.tcl
+  tempus -files 02_apply_false_path.tcl
+
+LAB06 Clock Gating:
+  cd ../LAB06_CLOCK_GATING_ECO
+  tempus -files 01_pre_eco_cg_fail.tcl
+  tempus -eco -files 02_run_cg_setup_eco.tcl
