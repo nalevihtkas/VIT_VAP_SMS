@@ -1,0 +1,8 @@
+set HERE [file dirname [file normalize [info script]]]
+source [file join $HERE .. common scripts common.tcl]
+load_demo_local false_path_top [file join $HERE false_path.v]
+create_clock -name CLK -period 5.0 [get_ports clk]
+set_false_path -from [get_pins U_CFG_L/Q] -to [get_pins U_CFG_C/D]
+puts "\n=== AFTER: functionally false config path excluded ==="
+report_timing -late -max_paths 5
+exit
